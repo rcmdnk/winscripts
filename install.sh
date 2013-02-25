@@ -41,7 +41,7 @@ if [[ "$OSTYPE" =~ "cygwin" ]];then
       shift
     fi
     target="$1"
-    if [ -d $target ];then
+    if [ -d "$target" ];then
       opt="/D $opt"
     fi
     if [ $# -eq 2 ];then
@@ -70,7 +70,7 @@ if [ $dryrun -ne 1 ];then
 else
   echo "*** This is dry run, not install anything ***"
 fi
-for f in *.sh;do
+for f in *;do
   for e in ${exclude[@]};do
     flag=0
     if [ "$f" = "$e" ];then
