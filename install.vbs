@@ -1,15 +1,17 @@
-Dim sName, defRoot, pPath, pName
+Dim sName, pPath, pName
 sName = Wscript.ScriptName
 
 Set WSHShell = WScript.CreateObject("WScript.Shell")
 Set Fs = WScript.CreateObject("Scripting.FileSystemObject")
+Set objNetWork = WScript.CreateObject("WScript.Network")
 
-username = WSHShell.ExpandEnvironmentStrings("%USERNAME%")
-defRoot = "C:\Users\" & username & "\Downloads"
+defRoot = "C:\Users\" & objNetWork.UserName & "\Downloads"
+'defRoot = "C:\Users\" & objNetWork.UserName
+'defRoot = ""
 
 Set Shell = CreateObject("Shell.Application")
-
 Set objFolder = Shell.BrowseForFolder(0, "インストールするプログラムのフォルダを選択してください", 1,defRoot)
+
 
 If objFolder is Nothing then 
   WScript.Quit
