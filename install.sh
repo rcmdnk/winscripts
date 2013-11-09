@@ -1,5 +1,5 @@
 #!/bin/bash
-exclude=('.' '..' 'README.md' 'install.sh')
+exclude=('.' '..' 'LICENCE' 'README.md' 'install.sh')
 instdir="$HOME/usr/bin"
 
 backup="bak"
