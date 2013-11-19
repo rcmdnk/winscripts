@@ -12,22 +12,29 @@ startMenu = WSHShell.SpecialFolders("AllUsersPrograms")
 Set Shell = CreateObject("Shell.Application")
 Set objFolder = Shell.BrowseForFolder(0, "アンインストールするプログラムのフォルダを選択してください", 1,progFiles)
 
-If objFolder is Nothing then 
+If objFolder is Nothing then
   WScript.Quit
 Else
   pPath = objFolder.Items.Item.Path
   pName = objFolder.Items.Item.Name
 End If
-Rem MsgBox "プログラムのフォルダ=" & pPath ,,sName
+ans = Msgbox(pPath & "を消しても良いですか？", vbYesNo, "Delete Program")
+
+If ans = vbNo Then
+    WScript.Quit
+End If
 
 If Not Fs.FolderExists(pPath) then
   MsgBox pPath & "がないよ",,sName
   WScript.Quit
-Rem Else
-Rem   MsgBox pPath & "はあるよ",,sName
+ElseIf pPath = progFiles then
+  MsgBox pPath & "は消せないよ",,sName
+  WScript.Quit
+' Else
+'   MsgBox pPath & "はあるよ",,sName
 End If
 
-Rem Fs.DeleteFolder pPath
+' Fs.DeleteFolder pPath
 Dim folder, folderItem, fileName
 Set folder = Shell.NameSpace(progFiles)
 Set folderItem = folder.ParseName(pName)
@@ -36,9 +43,9 @@ Do While Not folder.ParseName(pName) Is Nothing
   WScript.Sleep 100
 Loop
 
-Rem Fs.DeleteFolder startMenu & "\" & pName
+' Fs.DeleteFolder startMenu & "\" & pName
 Set objExec = WSHShell.Exec("cmd /C rd """ & startMenu & "\" & pName & """")
 Do Until objExec.StdErr.AtEndOfStream
   strLine = objExec.StdErr.ReadLine
-  MsgBox strLine
+  MsgBox strLine,,sName
 Loop
