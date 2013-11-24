@@ -1,19 +1,24 @@
-Dim sName, pPath, pName
+' Set basic objects
+Set wsh = WScript.CreateObject("WScript.Shell")
+Set fs = WScript.CreateObject("Scripting.FileSystemObject")
+Set nw = WScript.CreateObject("WScript.Network")
+Set sh = CreateObject("Shell.Application")
+
+' Basic Values
+progFiles = "C:\Program Files"
+startMenu = wsh.SpecialFolders("AllUsersPrograms")
+defRoot = "C:\Users\" & nw.UserName & "\Downloads"
+
+' Pathes
 sName = Wscript.ScriptName
+pPath = ""
+pName = ""
 
-Set WSHShell = WScript.CreateObject("WScript.Shell")
-Set Fs = WScript.CreateObject("Scripting.FileSystemObject")
-Set objNetWork = WScript.CreateObject("WScript.Network")
+' Set Folder to install
+Set objFolder = sh.BrowseForFolder(0, "インストールするプログラムのフォルダを選択してください", 1, defRoot)
 
-defRoot = "C:\Users\" & objNetWork.UserName & "\Downloads"
-'defRoot = "C:\Users\" & objNetWork.UserName
-'defRoot = ""
-
-Set Shell = CreateObject("Shell.Application")
-Set objFolder = Shell.BrowseForFolder(0, "インストールするプログラムのフォルダを選択してください", 1,defRoot)
-
-
-If objFolder is Nothing then 
+' Check Folder
+If objFolder is Nothing then
   WScript.Quit
 Else
   pPath = objFolder.Items.Item.Path
@@ -21,31 +26,29 @@ Else
 End If
 Rem MsgBox "プログラムのフォルダ=" & pPath ,,sName
 
-If Not Fs.FolderExists(pPath) then
+If Not fs.FolderExists(pPath) then
   MsgBox pPath & "がないよ",,sName
   WScript.Quit
 Rem Else
 Rem   MsgBox pPath & "はあるよ",,sName
 End If
 
-Dim progFiles, startMenu
-progFiles = "C:\Program Files"
-startMenu = WSHShell.SpecialFolders("AllUsersPrograms")
-
-If Fs.FolderExists(progFiles & "\" & pName) then
+If fs.FolderExists(progFiles & "\" & pName) then
   MsgBox pName & "はもうインストールされてるよ",,sName
   WScript.Quit
 End If
-If Fs.FolderExists(startMenu & "\" & pName) then
+If fs.FolderExists(startMenu & "\" & pName) then
   MsgBox pName & "はスタートメニューにはあるよ",,sName
   WScript.Quit
 End If
 
-
-Fs.CopyFolder pPath,progFiles & "\" & pName
-Rem WSHShell.Run "cmd /C mklink /D """ & startMenu & "\" & pName & """ """ & _
+' Copy Folder to progFiles
+fs.CopyFolder pPath,progFiles & "\" & pName
+Rem wsh.Run "cmd /C mklink /D """ & startMenu & "\" & pName & """ """ & _
 Rem             progFiles & "\" & pName & """",0,True
-Set objExec = WSHShell.Exec("cmd /C mklink /D """ & startMenu & "\" & pName & """ """ _
+
+' Make symbolic links to startMenu
+Set objExec = wsh.Exec("cmd /C mklink /D """ & startMenu & "\" & pName & """ """ _
               & progFiles & "\" & pName & """")
 Do Until objExec.StdErr.AtEndOfStream
   strLine = objExec.StdErr.ReadLine
