@@ -1,11 +1,11 @@
 ' Set basic objects
-Set wsh = WScript.CreateObject("WScript.Shell")
+Set wssh = WScript.CreateObject("WScript.Shell")
 Set fs = WScript.CreateObject("Scripting.FileSystemObject")
 Set sh = CreateObject("Shell.Application")
 
 ' Basic Values
 progFiles = "C:\Program Files"
-startMenu = wsh.SpecialFolders("AllUsersPrograms")
+startMenu = wssh.SpecialFolders("AllUsersPrograms")
 vDirRecyclebin = 10
 
 ' Pathes
@@ -50,7 +50,7 @@ Loop
 
 ' Remove Folder from startMenu
 Rem fs.DeleteFolder startMenu & "\" & pName
-Set objExec = wsh.Exec("cmd /C rd """ & startMenu & "\" & pName & """")
+Set objExec = wssh.Exec("cmd /C rd """ & startMenu & "\" & pName & """")
 Do Until objExec.StdErr.AtEndOfStream
   strLine = objExec.StdErr.ReadLine
   MsgBox strLine,,sName

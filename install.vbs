@@ -1,12 +1,12 @@
 ' Set basic objects
-Set wsh = WScript.CreateObject("WScript.Shell")
+Set wssh = WScript.CreateObject("WScript.Shell")
 Set fs = WScript.CreateObject("Scripting.FileSystemObject")
 Set nw = WScript.CreateObject("WScript.Network")
 Set sh = CreateObject("Shell.Application")
 
 ' Basic Values
 progFiles = "C:\Program Files"
-startMenu = wsh.SpecialFolders("AllUsersPrograms")
+startMenu = wssh.SpecialFolders("AllUsersPrograms")
 defRoot = "C:\Users\" & nw.UserName & "\Downloads"
 
 ' Pathes
@@ -44,11 +44,11 @@ End If
 
 ' Copy Folder to progFiles
 fs.CopyFolder pPath,progFiles & "\" & pName
-Rem wsh.Run "cmd /C mklink /D """ & startMenu & "\" & pName & """ """ & _
+Rem wssh.Run "cmd /C mklink /D """ & startMenu & "\" & pName & """ """ & _
 Rem             progFiles & "\" & pName & """",0,True
 
 ' Make symbolic links to startMenu
-Set objExec = wsh.Exec("cmd /C mklink /D """ & startMenu & "\" & pName & """ """ _
+Set objExec = wssh.Exec("cmd /C mklink /D """ & startMenu & "\" & pName & """ """ _
               & progFiles & "\" & pName & """")
 Do Until objExec.StdErr.AtEndOfStream
   strLine = objExec.StdErr.ReadLine
