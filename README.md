@@ -13,6 +13,3 @@ If there is a file, it makes backup file (.bak)
     cd winscripts
     ./install.sh
 
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/rcmdnk/winscripts/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
