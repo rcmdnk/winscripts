@@ -2,7 +2,7 @@
 
 if [[ ! "$OSTYPE" =~ cygwin ]];then
   echo Can be used only in cygwin.
-  exit 1
+  exit
 fi
 
 exclude=('.' '..' 'LICENSE' 'README.md' 'install.sh')
