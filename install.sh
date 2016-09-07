@@ -1,4 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+if [[ ! "$OSTYPE" =~ cygwin ]];then
+  echo Can be used only in cygwin.
+  exit 1
+fi
+
 exclude=('.' '..' 'LICENSE' 'README.md' 'install.sh')
 instdir="$HOME/usr/bin"
 
@@ -7,7 +13,7 @@ overwrite=1
 dryrun=0
 newlink=()
 exist=()
-curdir=`pwd -P`
+curdir=$(pwd -P)
 # help
 HELP="Usage: $0 [-nd] [-b <backup file postfix>] [-e <exclude file>] [-i <install dir>]
 
