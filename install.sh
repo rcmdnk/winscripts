@@ -8,7 +8,7 @@ fi
 exclude=('.' '..' 'LICENSE' 'README.md' 'install.sh')
 instdir="$HOME/usr/bin"
 
-backup="bak"
+backup=""
 overwrite=1
 dryrun=0
 newlink=()
@@ -20,9 +20,8 @@ HELP="Usage: $0 [-nd] [-b <backup file postfix>] [-e <exclude file>] [-i <instal
 Make links of scripts (default:in $instdir)
 
 Arguments:
-      -b  Set backup postfix (default: make *.bak file)
-          Set \"\" if backups are not necessary
-      -e  Set additional exclude file (default: ${exclude[@]})
+      -b  Set backup postfix, like \"bak\" (default: \"\": no back up is made)
+      -e  Set additional exclude file (default: ${exclude[*]})
       -i  Set install directory (default: $instdir)
       -n  Don't overwrite if file is already exist
       -d  Dry run, don't install anything
@@ -55,7 +54,7 @@ if [[ "$OSTYPE" =~ "cygwin" ]];then
     if [ $# -eq 2 ];then
       link="$2"
     elif [ $# -eq 1 ];then
-      link=`basename "$target"`
+      link=$(basename "$target")
     else
       echo "usage: ln [-s] <target> [<link>]"
       echo "       -s for symbolic link, otherwise make hard link"
@@ -73,12 +72,12 @@ echo "Install X to $instdir/X"
 echo "**********************************************"
 echo
 if [ $dryrun -ne 1 ];then
-  mkdir -p $instdir
+  mkdir -p "$instdir"
 else
   echo "*** This is dry run, not install anything ***"
 fi
 for f in *;do
-  for e in ${exclude[@]};do
+  for e in "${exclude[@]}";do
     flag=0
     if [ "$f" = "$e" ];then
       flag=1
@@ -92,7 +91,7 @@ for f in *;do
   if [ $dryrun -eq 1 ];then
     install=0
   fi
-  if [ "`ls "$instdir/$f" 2>/dev/null`" != "" ];then
+  if [ "$(ls "$instdir/$f" 2>/dev/null)" != "" ];then
     exist=(${exist[@]} "$f")
     if [ $dryrun -eq 1 ];then
       echo -n ""
@@ -116,7 +115,7 @@ if [ $dryrun -eq 1 ];then
 else
   echo "Following files were newly installed:"
 fi
-echo "  ${newlink[@]}"
+echo "  ${newlink[*]}"
 echo
 echo -n "Following files existed"
 if [ $dryrun -eq 1 ];then
@@ -128,5 +127,5 @@ elif [ "$backup" != "" ];then
 else
   echo "Following files existed, replaced old one:"
 fi
-echo "  ${exist[@]}"
+echo "  ${exist[*]}"
 echo
