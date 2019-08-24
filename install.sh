@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-if [[ ! "$OSTYPE" =~ cygwin ]];then
-  echo Can be used only in cygwin.
-  exit
-fi
-
 exclude=('.' '..' 'LICENSE' 'README.md' 'install.sh')
 instdir="$HOME/usr/bin"
 
