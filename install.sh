@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+documents="/cygdrive/c/Users/$USER/Documents"
+if [[ ! -d "$documents" ]];then
+  documents="/mnt/c/Users/$USER/Documents"
+  if [[ ! -d "$documents" ]];then
+    echo "Run in Cygwin or Windows Subsystem for Linux"
+    exit 1
+  fi
+fi
+
 exclude=('.' '..' 'LICENSE' 'README.md' 'install.sh')
 instdir="$HOME/usr/bin"
 
